@@ -8,7 +8,7 @@ public class Test1 {
     private ChromeDriver driver;
     private LoginPage loginPage;
     private MainPage mainPage;
-    private User user = new User("89229517124", "pevKeg9", "Миша Мельников");
+    private User user = new User("aaaa", "bbbb", "Миша Мельников");
 
     @Test
     public void Test(){
