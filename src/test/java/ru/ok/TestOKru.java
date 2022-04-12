@@ -10,7 +10,7 @@ public class TestOKru {
     private ChromeDriver driver;
     private LoginPage loginPage;
     //private MainPageFull mainPage;
-    private final User user = new User("89229517124", "pevKeg9", "Миша Мельников", "Малиновая лада");
+    private final User user = new User("aaa", "bbb", "ccc");
 
     @Test
     public void Test(){
