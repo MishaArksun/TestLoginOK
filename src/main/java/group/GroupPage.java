@@ -3,6 +3,8 @@ package group;
 import forFactory.Factory;
 import forFactory.MainPage;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.time.Duration;
@@ -54,12 +56,22 @@ public class GroupPage {
 
     public GroupPage openOfficialGroup(){
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-        driver.findElement(By.xpath("//a[@href='/groups/official']")).click();
+        driver.findElement(By.xpath("//a[@class='filter_i __without-ico'][@href='/groups/official']")).click();
         return new GroupPage(driver);
     }
 
     public MainPage goMainPage(){
         driver.findElement(By.xpath("//a[@data-l='t,userMain']")).click();
         return new Factory().get(driver);
+    }
+    public GroupPage scroll(){
+        JavascriptExecutor je = (JavascriptExecutor) driver;
+        WebElement element = driver.findElement(By.xpath("//a[@class='filter_i __without-ico __active']"));
+        je.executeScript("arguments[0].scrollIntoView(true);", element);
+        return this;
+    }
+    public GroupPage refresh(){
+        driver.navigate().refresh();
+        return new GroupPage(driver);
     }
 }
