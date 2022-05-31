@@ -26,29 +26,28 @@ public class GroupPage {
         this.driver = driver;
     }
 
-    public GroupPage addNGroups(int n){
-        ArrayList<GroupElement> groupElementList = new ArrayList<GroupElement>();
-        int i=1, count = 0;
-        while(count != n){
-            GroupElement groupElement = new GroupElement(driver.findElement
-                    (By.xpath("//div[@class='ugrid_cnt']/div[" + i + "]")));
-            if  (!groupElement.checkSub()){
-                groupElementList.add(groupElement);
-                i++;
-                count++;
-            }
-            else i++;
-        }
-        for(GroupElement a : groupElementList ){
-            System.out.println(a.getName());
-            a.add();
+    public GroupPage addNGroups(int n) {
+        for (int i = 0; i < n; i++) {
+            findUnsubscribedElement().add();
         }
         return this;
     }
 
-    public GroupPage exitNGroup(int n){
-        WebDriverWait wait = new WebDriverWait(driver,10);
-        for(int i=1; i <= n; i++){
+    private GroupElement findUnsubscribedElement() {
+        GroupElement groupElement;
+        int i = 1;
+        do {
+            groupElement = new GroupElement(driver.findElement(
+                    By.xpath("//div[@class='ugrid_cnt']/div[" + i + "]"))
+            );
+            i++;
+        } while (groupElement.checkSub());
+        return groupElement;
+    }
+
+    public GroupPage exitNGroup(int n) {
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        for (int i = 1; i <= n; i++) {
             wait.until(ExpectedConditions.presenceOfElementLocated
                     (By.xpath("//*[@class='scroll-slider_item mr-x'][" + i + "]")));
             driver.findElement(By.xpath("//*[@class='scroll-slider_item mr-x'][" + i + "]")).click();
@@ -60,28 +59,30 @@ public class GroupPage {
         return this;
     }
 
-    public int getNumSub(){
+    public int getNumSub() {
         new WebDriverWait(driver, 10).until(ExpectedConditions.presenceOfElementLocated(countGroup));
         return Integer.parseInt(driver.findElement(countGroup).getText());
     }
 
-    public GroupPage openOfficialGroup(){
+    public GroupPage openOfficialGroup() {
         new WebDriverWait(driver, 10).until(ExpectedConditions.presenceOfElementLocated(offGroupButton));
         driver.findElement(offGroupButton).click();
         return new GroupPage(driver);
     }
 
-    public MainPage goMainPage(){
+    public MainPage goMainPage() {
         driver.findElement(goMain).click();
         return new Factory().get(driver);
     }
-    public GroupPage scroll(){
+
+    public GroupPage scroll() {
         JavascriptExecutor je = (JavascriptExecutor) driver;
         WebElement element = driver.findElement(offGroup);
         je.executeScript("arguments[0].scrollIntoView(true);", element);
         return this;
     }
-    public GroupPage refresh(){
+
+    public GroupPage refresh() {
         driver.navigate().refresh();
         return new GroupPage(driver);
     }
