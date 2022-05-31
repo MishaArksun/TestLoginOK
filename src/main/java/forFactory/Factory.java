@@ -5,7 +5,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 public class Factory {
-
+    private final By nameInMobile = By.xpath("//*[@class='l-sidebar_profile_name']");
     public MainPage get(ChromeDriver driver){
         if (isMobile(driver)){
             return new MainPageMobile(driver);
@@ -16,7 +16,7 @@ public class Factory {
 
     private boolean isMobile(ChromeDriver driver){
         try {
-            driver.findElement(By.xpath("//*[@class='l-sidebar_profile_name']"));
+            driver.findElement(nameInMobile);
         } catch (NoSuchElementException e) {
             return false;
         }

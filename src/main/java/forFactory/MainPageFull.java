@@ -13,32 +13,36 @@ import java.time.Duration;
 
 public class MainPageFull implements MainPage {
     ChromeDriver driver;
+    private final By nameFull = By.xpath("//*[@class='tico ellip']");
+    private final By iconGroup = By.xpath("//a[@data-l='t,userAltGroup']");
+    private final By iconProducts = By.xpath("//a[@data-l='t,mall']");
+    private final By iconProfile  = By.xpath("//*[@class = 'ucard-mini toolbar_ucard js-toolbar-menu']");
+    private final By exitButton = By.xpath("//a[@data-l='t,logout']");
+    private final By exitButtonInWindow = By.xpath("//input[@data-l='t,logout']");
     public MainPageFull(ChromeDriver driver) {
         this.driver = driver;
     }
 
     public String getName(){
-        return driver.findElement(By.xpath("//*[@class='tico ellip']")).getText();
+        return driver.findElement(nameFull).getText();
     }
 
     public GroupPage openGroupPage(){
-        driver.findElement(By.xpath("//a[@data-l='t,userAltGroup']")).click();
+        driver.findElement(iconGroup).click();
         return new GroupPage(driver);
     }
 
     @Override
     public ProductsPage openProductsPage() {
-        driver.findElement(By.xpath("//a[@data-l='t,mall']")).click();
+        driver.findElement(iconProducts).click();
         return new ProductsPage(driver);
     }
 
     public LoginPage exit(){
-        driver.findElement(By.xpath("//*[@class = 'ucard-mini toolbar_ucard js-toolbar-menu']")).click();
-        driver.findElement(By.xpath("//a[@data-l='t,logout']")).click();
-        WebElement explicitWait = (new WebDriverWait(driver, 10))
-                .until(ExpectedConditions.presenceOfElementLocated(
-                        By.xpath("//input[@data-l='t,logout']")));
-        driver.findElement(By.xpath("//input[@data-l='t,logout']")).click();
+        driver.findElement(iconProfile).click();
+        driver.findElement(exitButton).click();
+        new WebDriverWait(driver, 10).until(ExpectedConditions.presenceOfElementLocated(exitButton));
+        driver.findElement(exitButtonInWindow).click();
         return new LoginPage(driver);
     }
 }

@@ -6,7 +6,6 @@ import ok.ProductsPage;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -14,6 +13,9 @@ import ok.LoginPage;
 import ok.User;
 
 import java.time.Duration;
+
+import static group.WordContainedInTitleMatcher.WordContainedInTitle;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class TestOKru {
     private static ChromeDriver driver;
@@ -53,16 +55,19 @@ public class TestOKru {
                 .goMainPage();
     }
 
-    @Test
-    public void Test2(){
+    @ParameterizedTest
+    @ValueSource(strings = {"Велосипед", "Кружка"})
+    public void Test2(String argument){
         ProductsPage productsPage = new Factory()
                 .get(driver)
                 .openProductsPage()
-                .SearchProducts("Велосипед");
+                .SearchProducts(argument);
 
-        String nam = productsPage.GetNameNProduct(2);
-        Assertions.assertTrue(nam.toLowerCase().contains("велосипед"));
+        String name = productsPage.GetNameNProduct(3);
+        assertThat(argument, WordContainedInTitle(name));
+        productsPage.goMainPage();
     }
+
 
     @AfterAll
     static void after() {
@@ -70,4 +75,6 @@ public class TestOKru {
                 .get(driver)
                 .exit();
     }
+
+
 }
