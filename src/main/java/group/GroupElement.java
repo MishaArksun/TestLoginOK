@@ -24,6 +24,7 @@ public class GroupElement {
     }
 
     public boolean checkSub(){
+
         try {
             webElement.findElement(By.xpath(".//div[@class='caption']/div[3]//a"));
         } catch (NoSuchElementException e) {

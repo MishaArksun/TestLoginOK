@@ -6,6 +6,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -20,7 +22,8 @@ public class GroupPage {
         ArrayList<GroupElement> groupElementList = new ArrayList<GroupElement>();
         int i=1, count = 0;
         while(count != n){
-            GroupElement groupElement = new GroupElement(driver.findElement(By.xpath("//div[@class='ugrid_cnt']/div[" + i + "]")));
+            GroupElement groupElement = new GroupElement(driver.findElement
+                    (By.xpath("//div[@class='ugrid_cnt']/div[" + i + "]")));
             if  (!groupElement.checkSub()){
                 groupElementList.add(groupElement);
                 i++;
@@ -28,8 +31,6 @@ public class GroupPage {
             }
             else i++;
         }
-
-
         for(GroupElement a : groupElementList ){
             System.out.println(a.getName());
             a.add();
@@ -38,10 +39,13 @@ public class GroupPage {
     }
 
     public GroupPage exitNGroup(int n){
+        WebDriverWait wait = new WebDriverWait(driver,10);
         for(int i=1; i <= n; i++){
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+            wait.until(ExpectedConditions.presenceOfElementLocated
+                    (By.xpath("//*[@class='scroll-slider_item mr-x'][" + i + "]")));
             driver.findElement(By.xpath("//*[@class='scroll-slider_item mr-x'][" + i + "]")).click();
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+            wait.until(ExpectedConditions.presenceOfElementLocated
+                    (By.xpath("//*[@class='dropdown __wide h-mod']")));
             driver.findElement(By.xpath("//*[@class='dropdown __wide h-mod']")).click();
             driver.findElement(By.xpath("//*[@class='dropdown_n']")).click();
             driver.findElement(By.xpath("//*[@id='toolbar_back_id']")).click();
@@ -50,12 +54,16 @@ public class GroupPage {
     }
 
     public int getNumSub(){
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        WebElement explicitWait = (new WebDriverWait(driver, 10))
+                .until(ExpectedConditions.presenceOfElementLocated
+                        (By.xpath("//span[@class='portlet_h_count']")));
         return Integer.parseInt(driver.findElement(By.xpath("//span[@class='portlet_h_count']")).getText());
     }
 
     public GroupPage openOfficialGroup(){
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        WebElement explicitWait = (new WebDriverWait(driver, 10))
+                .until(ExpectedConditions.presenceOfElementLocated
+                        (By.xpath("//a[@class='filter_i __without-ico'][@href='/groups/official']")));
         driver.findElement(By.xpath("//a[@class='filter_i __without-ico'][@href='/groups/official']")).click();
         return new GroupPage(driver);
     }

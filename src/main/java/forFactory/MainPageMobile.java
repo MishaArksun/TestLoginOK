@@ -2,6 +2,7 @@ package forFactory;
 
 import group.GroupPage;
 import ok.LoginPage;
+import ok.ProductsPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
 
@@ -21,6 +22,13 @@ public class MainPageMobile implements MainPage{
         driver.findElement(By.xpath("//*[@id='sidebar-userAltGroups']")).click();
         return new GroupPage(driver);
     }
+
+    @Override
+    public ProductsPage openProductsPage() {
+        driver.findElement(By.xpath("//*[@id='sidebar-mall']")).click();
+        return new ProductsPage(driver);
+    }
+
     @Override
     public LoginPage exit(){
         driver.findElement(By.className("ucard-mini toolbar_ucard js-toolbar-menu")).click();
