@@ -9,24 +9,25 @@ public class GroupElement {
     private final By nameGroup = By.xpath(".//a[@class='o group-name-link']");
     private final By subGroup = By.xpath(".//*[@class = 'friends-in-group_label']/span");
     private final By addButton = By.xpath(".//*[@class = 'button-pro group-join_btn __small __sec']");
-    public GroupElement(WebElement webElement){
-        this.webElement=webElement;
+
+    public GroupElement(WebElement webElement) {
+        this.webElement = webElement;
     }
 
-    public String getName(){
+    public String getName() {
         return webElement.findElement(nameGroup).getText();
     }
 
-    public String getSub(){
+    public String getSub() {
         return webElement.findElement(subGroup).getText();
     }
 
-    public GroupElement add(){
+    public GroupElement add() {
         webElement.findElement(addButton).click();
         return this;
     }
 
-    public boolean checkSub(){
+    public boolean checkSub() {
 
         try {
             webElement.findElement(addButton);

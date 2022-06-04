@@ -27,7 +27,7 @@ public class TestOKru {
         System.setProperty("webdriver.chrome.driver", "C:\\tehnopolis\\chromedriver_win32\\chromedriver.exe");
         driver = new ChromeDriver();
         driver.get("https://ok.ru/");
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
         LoginPage loginPage = new LoginPage(driver);
         loginPage.login(user.getLogin(), user.getPass());
     }
@@ -57,7 +57,7 @@ public class TestOKru {
 
     @ParameterizedTest
     @ValueSource(strings = {"Велосипед", "Кружка"})
-    public void Test2(String argument){
+    public void Test2(String argument) {
         ProductsPage productsPage = new Factory()
                 .get(driver)
                 .openProductsPage()

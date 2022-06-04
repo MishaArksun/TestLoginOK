@@ -4,13 +4,14 @@ import forFactory.Factory;
 import forFactory.MainPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
-import java.util.ArrayList;
+
+import static com.codeborne.selenide.Configuration.timeout;
 
 public class GroupPage {
     ChromeDriver driver;
@@ -21,28 +22,21 @@ public class GroupPage {
     private final By offGroupButton = By.xpath("//a[@class='filter_i __without-ico'][@href='/groups/official']");
     private final By goMain = By.xpath("//a[@data-l='t,userMain']");
     private final By offGroup = By.xpath("//a[@class='filter_i __without-ico __active']");
+    private final By joinButton = By.xpath("(//*[@class='button-pro group-join_btn __small __sec'])[1]");
 
     public GroupPage(ChromeDriver driver) {
         this.driver = driver;
     }
 
     public GroupPage addNGroups(int n) {
-        for (int i = 0; i < n; i++) {
-            findUnsubscribedElement().add();
+        for (int i = 1; i < n + 1; i++) {
+            new WebDriverWait(driver, timeout)
+                    .ignoring(StaleElementReferenceException.class)
+                    .until(ExpectedConditions.elementToBeClickable(joinButton));
+            driver.findElement(joinButton).click();
+            refresh();
         }
         return this;
-    }
-
-    private GroupElement findUnsubscribedElement() {
-        GroupElement groupElement;
-        int i = 1;
-        do {
-            groupElement = new GroupElement(driver.findElement(
-                    By.xpath("//div[@class='ugrid_cnt']/div[" + i + "]"))
-            );
-            i++;
-        } while (groupElement.checkSub());
-        return groupElement;
     }
 
     public GroupPage exitNGroup(int n) {
